@@ -1,34 +1,32 @@
 spring:
-  cloud:
-    gcp:
-      storage:
-        credentials: classpath:your-gcp-credentials.json
-        bucket: seu-bucket-gcp
   kafka:
     bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    url: jdbc:h2:mem:testdbcadoc;DB_CLOSE_DELAY=-1
     username: sa
-    password: password
+    password:
     driver-class-name: org.h2.Driver
     hikari:
       pool-name: HikariCP
       maximum-pool-size: 10
+
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+
   batch:
-    initialize-schema: always  # Usado para inicializar os esquemas do Spring Batch
-  data:
-    jdbc:
-      repositories:
-        enabled: true  # Habilita o repositório de jobs do Spring Batch
-    batch:
-      job:
-        enabled: true
+    initialize-schema: always
+    job:
+      enabled: true
+
+  cloud:
+    gcp:
+      storage:
+        credentials: classpath:your-gcp-credentials.json
+        bucket: seu-bucket-gcp

@@ -1,9 +1,8 @@
 package com.eryka.cadoc3044.writer;
 
 import com.eryka.cadoc3044.model.Evento;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.batch.item.Chunk;
+import org.springframework.batch.item.ItemWriter;
 
 import java.util.List;
 

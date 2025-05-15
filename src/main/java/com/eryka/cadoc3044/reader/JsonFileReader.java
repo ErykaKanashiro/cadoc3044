@@ -1,7 +1,8 @@
 package com.eryka.cadoc3044.reader;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.eryka.cadoc3044.model.Evento;
+import com.eryka.cadoc3044.model.Root;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -21,7 +22,6 @@ public class JsonFileReader implements ItemReader<Evento> {
     private List<Evento> eventos;
     private int currentIndex = 0;
 
-    // Caminho GCP (prefixo gs://) ou local para testes
     private final String gcsFilePath = "gs://seu-bucket/nome-do-arquivo.json";
     private final String localFilePath = "I:/eryka/Downloads/cadoc3044/src/main/resources/cadoc3044_exemplo.json";
 
@@ -35,9 +35,7 @@ public class JsonFileReader implements ItemReader<Evento> {
         if (eventos == null) {
             InputStream inputStream;
 
-            // ======== TROCAR ESTA FLAG CONFORME O AMBIENTE ========
             boolean useLocalFile = true;
-            // =====================================================
 
             if (useLocalFile) {
                 File file = new File(localFilePath);
@@ -47,8 +45,10 @@ public class JsonFileReader implements ItemReader<Evento> {
                 inputStream = resource.getInputStream();
             }
 
-            eventos = objectMapper.readValue(inputStream,
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, Evento.class));
+            // Ler o JSON raiz para Root.class
+            Root root = objectMapper.readValue(inputStream, Root.class);
+
+            eventos = root.getOperacoes();
         }
 
         if (currentIndex < eventos.size()) {
