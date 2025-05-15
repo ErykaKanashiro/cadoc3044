@@ -1,0 +1,43 @@
+Abra o terminal (CMD) e vá até o diretório do Kafka:
+
+cd C:\kafka\kafka_2.13-4.0.0
+
+
+Agora, inicie o broker Kafka no modo KRaft com o comando:
+
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+
+Criar um Tópico no Kafka
+.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --topic cadoc3044-topico --partitions 1 --replication-factor 1
+
+--create: Cria o tópico.
+--bootstrap-server localhost:9092: Conecta ao broker Kafka em localhost na porta 9092.
+--topic cadoc3044-topico: Define o nome do tópico como cadoc3044-topico.
+--partitions 1: Define o número de partições para o tópico.
+--replication-factor 1: Define o fator de replicação.
+
+Para listar os tópicos disponíveis no Kafka:
+
+.\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
+
+
+Postar Mensagens no Tópico
+.\bin\windows\kafka-console-producer.bat --bootstrap-server localhost:9092 --topic cadoc3044-topico
+
+
+Ou, se você tiver um arquivo com várias mensagens, use o seguinte comando:
+
+.\bin\windows\kafka-console-producer.bat --bootstrap-server localhost:9092 --topic cadoc3044-topico < C:\caminho\para\mensagens.txt
+
+
+Consumir Mensagens do Tópico
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic cadoc3044-topico --from-beginning
+
+
+Parar o Kafka
+Quando terminar de usar o Kafka, você pode parar o processo pressionando Ctrl + C no terminal onde o Kafka está rodando.
+
+
+Referencia:
+https://medium.com/@lahirurajapakshe.stack/apache-kafka-complete-setup-client-integration-guide-java-net-a664764c1a62
