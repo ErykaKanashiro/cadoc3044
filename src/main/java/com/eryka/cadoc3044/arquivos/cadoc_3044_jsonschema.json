@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["cnpjIF", "dataHoraRemessa", "database", "operacoes", "pagAgregados"],
+  "properties": {
+    "cnpjIF": {
+      "type": "string",
+      "pattern": "^[0-9]{8,14}$"
+    },
+    "dataHoraRemessa": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "database": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}$"
+    },
+    "operacoes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["acao", "ipoc", "saldoDevedor", "atraso"],
+        "properties": {
+          "acao": {
+            "type": "integer",
+            "enum": [1, 2]
+          },
+          "ipoc": {
+            "type": "string",
+            "minLength": 1
+          },
+          "saldoDevedor": {
+            "type": "number",
+            "minimum": 0
+          },
+          "atraso": {
+            "type": "string",
+            "enum": ["S", "N"]
+          },
+          "pagamentos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["acao", "data", "class3050", "valor"],
+              "properties": {
+                "acao": {
+                  "type": "integer",
+                  "enum": [1, 2]
+                },
+                "data": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "class3050": {
+                  "type": "string",
+                  "pattern": "^[0-9]+$"
+                },
+                "valor": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "concessoes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["acao", "data", "class3050", "valor"],
+              "properties": {
+                "acao": {
+                  "type": "integer",
+                  "enum": [1, 2]
+                },
+                "data": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "class3050": {
+                  "type": "string",
+                  "pattern": "^[0-9]+$"
+                },
+                "valor": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "pagAgregados": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["acao", "data", "class3050", "valor"],
+        "properties": {
+          "acao": {
+            "type": "integer",
+            "enum": [1, 2]
+          },
+          "data": {
+            "type": "string",
+            "format": "date"
+          },
+          "class3050": {
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "valor": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
