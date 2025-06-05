@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Pagamento extends EventoBase {
+public class EventoPagAgregado extends EventoBase {
 
 }

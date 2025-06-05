@@ -5,11 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Concessao {
-
-    private int acao;
-    private String data;
-    private String class3050;
-    private double valor;
+public class Concessao extends EventoBase {
 
 }

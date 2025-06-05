@@ -8,8 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Cadoc3044Application {
 
 	public static void main(String[] args) {
-	//	SpringApplication.run(Cadoc3044Application.class, args);
-
+		// Inicia o contexto do Spring Boot
 		ConfigurableApplicationContext context = SpringApplication.run(Cadoc3044Application.class, args);
 		context.close();
 	}
