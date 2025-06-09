@@ -1,4 +1,4 @@
-package com.eryka.cadoc3044.model;
+package com.eryka.cadoc3044.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class EventoBase {
+public abstract class EventoBaseDTO {
 
     @Min(value = 1)
     @Max(value = 2)

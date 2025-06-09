@@ -1,7 +1,7 @@
 package com.eryka.cadoc3044.reader;
 
-import com.eryka.cadoc3044.model.Cadoc3044;
-import com.eryka.cadoc3044.model.EventoOperacao;
+import com.eryka.cadoc3044.dto.Cadoc3044DTO;
+import com.eryka.cadoc3044.dto.EventoOperacaoDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.core.io.Resource;
@@ -14,12 +14,12 @@ import java.io.InputStream;
 import java.util.List;
 
 @Component
-public class Cadoc3044FileReader implements ItemReader<EventoOperacao> {
+public class Cadoc3044FileReader implements ItemReader<EventoOperacaoDTO> {
 
     private final ResourceLoader resourceLoader;
     private final ObjectMapper objectMapper;
 
-    private List<EventoOperacao> eventosCredito;
+    private List<EventoOperacaoDTO> eventosCredito;
     private int currentIndex = 0;
 
     private final String gcsFilePath = "gs://seu-bucket/nome-do-arquivo.json";
@@ -31,7 +31,7 @@ public class Cadoc3044FileReader implements ItemReader<EventoOperacao> {
     }
 
     @Override
-    public EventoOperacao read() throws Exception {
+    public EventoOperacaoDTO read() throws Exception {
         if (eventosCredito == null) {
             InputStream inputStream;
 
@@ -46,9 +46,9 @@ public class Cadoc3044FileReader implements ItemReader<EventoOperacao> {
             }
 
             // Ler o JSON raiz(root) para Cadoc3044.class
-            Cadoc3044 cadoc3044 = objectMapper.readValue(inputStream, Cadoc3044.class);
+            Cadoc3044DTO cadoc3044DTO = objectMapper.readValue(inputStream, Cadoc3044DTO.class);
 
-            eventosCredito = cadoc3044.getOperacoes();
+            eventosCredito = cadoc3044DTO.getOperacoes();
 
         }
 

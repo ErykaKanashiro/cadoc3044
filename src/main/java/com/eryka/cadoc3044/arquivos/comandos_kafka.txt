@@ -9,11 +9,11 @@ Agora, inicie o broker Kafka no modo KRaft com o comando:
 
 
 Criar um Tópico no Kafka
-.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --topic cadoc3044-topico --partitions 1 --replication-factor 1
+.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --topic cadoc3044DTO-topico --partitions 1 --replication-factor 1
 
 --create: Cria o tópico.
 --bootstrap-server localhost:9092: Conecta ao broker Kafka em localhost na porta 9092.
---topic cadoc3044-topico: Define o nome do tópico como cadoc3044-topico.
+--topic cadoc3044DTO-topico: Define o nome do tópico como cadoc3044DTO-topico.
 --partitions 1: Define o número de partições para o tópico.
 --replication-factor 1: Define o fator de replicação.
 
@@ -23,16 +23,16 @@ Para listar os tópicos disponíveis no Kafka:
 
 
 Postar Mensagens no Tópico
-.\bin\windows\kafka-console-producer.bat --bootstrap-server localhost:9092 --topic cadoc3044-topico
+.\bin\windows\kafka-console-producer.bat --bootstrap-server localhost:9092 --topic cadoc3044DTO-topico
 
 
 Ou, se você tiver um arquivo com várias mensagens, use o seguinte comando:
 
-.\bin\windows\kafka-console-producer.bat --bootstrap-server localhost:9092 --topic cadoc3044-topico < C:\caminho\para\mensagens.txt
+.\bin\windows\kafka-console-producer.bat --bootstrap-server localhost:9092 --topic cadoc3044DTO-topico < C:\caminho\para\mensagens.txt
 
 
 Consumir Mensagens do Tópico
-.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic cadoc3044-topico --from-beginning
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic cadoc3044DTO-topico --from-beginning
 
 
 Parar o Kafka

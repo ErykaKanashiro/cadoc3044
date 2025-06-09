@@ -1,6 +1,6 @@
 package com.eryka.cadoc3044.config;
 
-import com.eryka.cadoc3044.model.EventoOperacao;
+import com.eryka.cadoc3044.dto.EventoOperacaoDTO;
 import com.eryka.cadoc3044.processor.Cadoc3044Processor;
 import com.eryka.cadoc3044.reader.Cadoc3044FileReader;
 import com.eryka.cadoc3044.writer.Cadoc3044ItemWriter;
@@ -39,7 +39,7 @@ public class Cadoc3044BatchConfig {
                             Cadoc3044Processor processor) {
 
         return new StepBuilder("step1", jobRepository)
-                .<EventoOperacao, EventoOperacao>chunk(1, transactionManager)
+                .<EventoOperacaoDTO, EventoOperacaoDTO>chunk(1, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer())
@@ -47,7 +47,7 @@ public class Cadoc3044BatchConfig {
     }
 
     @Bean
-    public ItemWriter<EventoOperacao> writer() {
+    public ItemWriter<EventoOperacaoDTO> writer() {
         return new Cadoc3044ItemWriter();
     }
 

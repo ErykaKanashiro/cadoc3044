@@ -1,6 +1,6 @@
 package com.eryka.cadoc3044.processor;
 
-import com.eryka.cadoc3044.model.EventoOperacao;
+import com.eryka.cadoc3044.dto.EventoOperacaoDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class Cadoc3044Processor implements ItemProcessor<EventoOperacao, EventoOperacao> {
+public class Cadoc3044Processor implements ItemProcessor<EventoOperacaoDTO, EventoOperacaoDTO> {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Override
-    public EventoOperacao process(EventoOperacao item) {
-        Set<ConstraintViolation<EventoOperacao>> violations = validator.validate(item);
+    public EventoOperacaoDTO process(EventoOperacaoDTO item) {
+        Set<ConstraintViolation<EventoOperacaoDTO>> violations = validator.validate(item);
 
         if (!violations.isEmpty()) {
             String erro = violations.stream()

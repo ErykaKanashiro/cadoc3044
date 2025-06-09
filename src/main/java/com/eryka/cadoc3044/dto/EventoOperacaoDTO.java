@@ -1,4 +1,4 @@
-package com.eryka.cadoc3044.model;
+package com.eryka.cadoc3044.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class EventoOperacao {
+public class EventoOperacaoDTO {
 
     @NotNull
     @Min(value = 1)
@@ -26,8 +26,8 @@ public class EventoOperacao {
     @Pattern(regexp = "[SN]", message = "Atraso deve ser S ou N")
     private String atraso;
     @Valid
-    private List<Pagamento> pagamentos;
+    private List<PagamentoDTO> pagamentos;
     @Valid
-    private List<Concessao> concessoes;
+    private List<ConcessaoDTO> concessoes;
 
 }

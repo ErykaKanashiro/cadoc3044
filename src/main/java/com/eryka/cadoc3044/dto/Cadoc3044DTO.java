@@ -1,4 +1,4 @@
-package com.eryka.cadoc3044.model;
+package com.eryka.cadoc3044.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Cadoc3044 {
+public class Cadoc3044DTO {
     @Pattern(regexp = "\\d{8}")
     @NotNull
     private String cnpjIF;
@@ -21,7 +21,7 @@ public class Cadoc3044 {
     @Pattern(regexp = "\\d{4}-\\d{2}")
     private String database;
     @Valid
-    private List<EventoOperacao> operacoes;
+    private List<EventoOperacaoDTO> operacoes;
     @Valid
-    private List<EventoPagAgregado> pagAgregados;
+    private List<EventoPagAgregadoDTO> pagAgregados;
 }
