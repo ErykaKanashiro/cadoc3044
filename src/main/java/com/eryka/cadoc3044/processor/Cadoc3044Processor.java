@@ -1,6 +1,6 @@
-package com.eryka.cadoc3044.processor;
-
 import com.eryka.cadoc3044.dto.EventoOperacaoDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -16,6 +16,12 @@ import java.util.stream.Collectors;
 public class Cadoc3044Processor implements ItemProcessor<EventoOperacaoDTO, EventoOperacaoDTO> {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final PubSubService pubSubService;
+
+    public Cadoc3044Processor(PubSubService pubSubService) {
+        this.pubSubService = pubSubService;
+    }
 
     @Override
     public EventoOperacaoDTO process(EventoOperacaoDTO item) {
@@ -26,12 +32,17 @@ public class Cadoc3044Processor implements ItemProcessor<EventoOperacaoDTO, Even
                     .map(v -> v.getPropertyPath() + ": " + v.getMessage())
                     .collect(Collectors.joining("; "));
 
-            // logar, publicar no Pub/Sub ou gravar em tabela de rejeição
-            System.err.println("Evento inválido: " + erro);
+            try {
+                String json = objectMapper.writeValueAsString(item);
+                pubSubService.publicarRejeicao(json, erro);
+            } catch (JsonProcessingException e) {
+                log.error("Erro ao serializar item rejeitado: {}", e.getMessage());
+            }
 
-            return null; // evento rejeitado → não será escrito no banco de dados
+            log.error("Erro de validação no item: {}", erro);
+            return null;
         }
 
-        return item; // válido → segue para o writer
+        return item;
     }
 }

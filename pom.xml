@@ -52,6 +52,13 @@
 			<artifactId>spring-cloud-gcp-starter-storage</artifactId>
 		</dependency>
 
+		<!-- Google Pub Sub -->
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-pubsub</artifactId>
+		</dependency>
+
 		<!-- Batch Extras -->
 		<dependency>
 			<groupId>org.springframework.batch</groupId>

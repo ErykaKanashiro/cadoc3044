@@ -22,5 +22,6 @@ spring:
       storage:
         credentials: classpath:your-gcp-credentials.json
         bucket: seu-bucket-gcp
+
 server:
   port: 8081
