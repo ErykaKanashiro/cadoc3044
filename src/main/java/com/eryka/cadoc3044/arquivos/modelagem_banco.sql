@@ -515,3 +515,139 @@ TbMotivoRejeicao
 | `TbOperacao`             | `TbConcessao`             | 1\:N            | Uma operação pode conter várias concessões                   |
 | `TbEventoRejeitado`      | `TbEventoRejeitadoMotivo` | 1\:N            | Um evento pode ter vários motivos de rejeição                |
 | `TbMotivoRejeicao`       | `TbEventoRejeitadoMotivo` | 1\:N            | Um motivo pode estar relacionado a vários eventos rejeitados |
+
+
+
+
+---------------------TbSistemaOrigem e TbArquivoRemessaOrigem
+| Campo              | Tipo         | Descrição                                |
+| ------------------ | ------------ | ---------------------------------------- |
+| CdSistemaOrigem    | SERIAL (PK)  | Identificador único do sistema de origem |
+| SgSistemaOrigem    | VARCHAR(255) | Sigla do sistema de origem               |
+| NmOrigem           | VARCHAR(255) | Nome do sistema ou origem                |
+| FlObrigatoria      | CHAR(1)      | Flag que indica se o envio é obrigatório |
+| DsEmailResponsavel | VARCHAR(255) | E-mail do responsável pela origem        |
+| DsEmailGrupo       | VARCHAR(255) | E-mail do grupo responsável              |
+| FlAtivo            | CHAR(1)      | Flag de status (ativo/inativo)           |
+| DtInclusao         | TIMESTAMP    | Data de inclusão do registro             |
+| DtAlteracao        | TIMESTAMP    | Data da última alteração                 |
+
+
+
+| Campo                  | Tipo         | Descrição                                     |
+| ---------------------- | ------------ | --------------------------------------------- |
+| CdArquivoRemessaOrigem | SERIAL (PK)  | Identificador do arquivo de remessa da origem |
+| CdCnpjIF               | VARCHAR(20)  | CNPJ da Instituição Financeira remetente      |
+| DtHoraRemessa          | TIMESTAMP    | Data/hora da remessa recebida                 |
+| NmArquivo              | VARCHAR(255) | Nome do arquivo de remessa                    |
+| CdSistemaOrigem        | INT (FK)     | Chave estrangeira para TbSistemaOrigem        |
+| DtReferencia           | TIMESTAMP    | Data de referência do conteúdo                |
+| DtBase                 | TIMESTAMP    | Data-base do conteúdo                         |
+| FlAtivo                | CHAR(1)      | Flag de status (ativo/inativo)                |
+| DtInclusao             | TIMESTAMP    | Data de inclusão                              |
+| DtAlteracao            | TIMESTAMP    | Data da última alteração                      |
+
+
+--------------------- TbArquivoRemessaEnvio
+| Campo                 | Tipo         | Descrição                                |
+| --------------------- | ------------ | ---------------------------------------- |
+| CdArquivoRemessaEnvio | SERIAL (PK)  | Identificador da remessa de envio        |
+| CdSistemaOrigem       | INT (FK)     | Chave estrangeira para TbSistemaOrigem   |
+| NmArquivo             | VARCHAR(255) | Nome do arquivo gerado para envio        |
+| DtBase                | DATE         | Data-base da remessa                     |
+| DtHoraRemessa         | DATETIME     | Data/hora do envio                       |
+| DtProximaRemessa      | DATETIME     | Data/hora da próxima remessa esperada    |
+| FlEnviado             | CHAR(1)      | Flag que indica se o arquivo foi enviado |
+| FlAtivo               | CHAR(1)      | Flag de status (ativo/inativo)           |
+| DtInclusao            | TIMESTAMP    | Data de inclusão                         |
+| DtAlteracao           | TIMESTAMP    | Data da última alteração                 |
+
+
+--------------------- TbOperacao
+| Campo                  | Tipo          | Descrição                                   |
+| ---------------------- | ------------- | ------------------------------------------- |
+| CdOperacao             | SERIAL (PK)   | Identificador único da operação             |
+| CdEventoOperacao       | VARCHAR(255)  | Código do evento da operação                |
+| Ipoc                   | VARCHAR(100)  | Identificador da operação de crédito        |
+| CdAcao                 | CHAR(1)       | Código da ação (inclui/atualiza/remove etc) |
+| DtEvento               | DATE          | Data do evento                              |
+| VrSaldoDevedor         | NUMERIC(18,2) | Valor do saldo devedor                      |
+| FlAtraso               | CHAR(1)       | Indica se está em atraso                    |
+| CdArquivoRemessaOrigem | INT (FK)      | Referência ao arquivo recebido              |
+| CdArquivoRemessaEnvio  | INT (FK)      | Referência ao arquivo de envio              |
+| FlConsolidado          | TIMESTAMP     | Data/hora em que foi consolidado            |
+| DtHoraConsolidado      | TIMESTAMP     | Data/hora da consolidação efetiva           |
+| FlAtivo                | CHAR(1)       | Flag de status (ativo/inativo)              |
+| DtInclusao             | TIMESTAMP     | Data de inclusão                            |
+| DtAlteracao            | TIMESTAMP     | Data da última alteração                    |
+
+--------------------- TbPagamento
+| Campo             | Tipo          | Descrição                         |
+| ----------------- | ------------- | --------------------------------- |
+| CdPagamento       | SERIAL (PK)   | Identificador do pagamento        |
+| CdOperacao        | INT (FK)      | Referência à operação relacionada |
+| CdEventoPagamento | VARCHAR(255)  | Código do evento de pagamento     |
+| CdAcao            | CHAR(1)       | Código da ação do pagamento       |
+| DtPagamento       | DATE          | Data do pagamento                 |
+| CdClass3050       | VARCHAR(50)   | Classificação 3050                |
+| VrPagamento       | NUMERIC(18,2) | Valor do pagamento                |
+| FlAtivo           | CHAR(1)       | Flag de status                    |
+| DtInclusao        | TIMESTAMP     | Data de inclusão                  |
+| DtAlteracao       | TIMESTAMP     | Data da última alteração          |
+
+--------------------- TbConcessao
+| Campo             | Tipo          | Descrição                     |
+| ----------------- | ------------- | ----------------------------- |
+| CdConcessao       | SERIAL (PK)   | Identificador da concessão    |
+| CdOperacao        | INT (FK)      | Referência à operação         |
+| CdEventoConcessao | VARCHAR(255)  | Código do evento da concessão |
+| CdAcao            | CHAR(1)       | Código da ação                |
+| DtConcessao       | DATE          | Data da concessão             |
+| CdClass3050       | VARCHAR(50)   | Classificação 3050            |
+| VrConcessao       | NUMERIC(18,2) | Valor concedido               |
+| FlAtivo           | CHAR(1)       | Flag de status                |
+| DtInclusao        | TIMESTAMP     | Data de inclusão              |
+| DtAlteracao       | TIMESTAMP     | Data da última alteração      |
+
+--------------------- TbMotivoRejeicao
+| Campo            | Tipo         | Descrição                           |
+| ---------------- | ------------ | ----------------------------------- |
+| CdMotivoRejeicao | SERIAL (PK)  | Identificador do motivo de rejeição |
+| CdMotivo         | VARCHAR(10)  | Código do motivo (único)            |
+| DsMotivo         | VARCHAR(255) | Descrição do motivo                 |
+| FlAtivo          | CHAR(1)      | Flag de status                      |
+| DtInclusao       | TIMESTAMP    | Data de inclusão                    |
+| DtAlteracao      | TIMESTAMP    | Data da última alteração            |
+
+--------------------- TbEventoRejeitado
+| Campo                  | Tipo      | Descrição                             |
+| ---------------------- | --------- | ------------------------------------- |
+| CdEventoRejeitado      | INT (PK)  | Identificador do evento rejeitado     |
+| DtHora                 | TIMESTAMP | Data/hora do recebimento do evento    |
+| NmArquivo              | VARCHAR   | Nome do arquivo onde ocorreu o erro   |
+| NrLinhaArquivo         | INT       | Número da linha com problema          |
+| CdSistemaOrigem        | INT (FK)  | Sistema de origem que enviou o evento |
+| CdAcao                 | CHAR      | Código da ação                        |
+| JsDadosRecebidos       | JSONB     | Dados recebidos (JSON bruto)          |
+| CdArquivoRemessaOrigem | INT (FK)  | Referência ao arquivo recebido        |
+| FlAtivo                | CHAR      | Flag de status                        |
+| DtInclusao             | TIMESTAMP | Data de inclusão                      |
+| DtAlteracao            | TIMESTAMP | Data da última alteração              |
+
+--------------------- TbEventoRejeitadoMotivo
+| Campo             | Tipo      | Descrição                        |
+| ----------------- | --------- | -------------------------------- |
+| CdEventoRejeitado | INT (FK)  | Referência ao evento rejeitado   |
+| CdMotivoRejeicao  | INT (FK)  | Referência ao motivo de rejeição |
+| DtInclusao        | TIMESTAMP | Data de inclusão                 |
+
+--------------------- TbRelatorioEnvioOrigens
+| Campo            | Tipo         | Descrição                              |
+| ---------------- | ------------ | -------------------------------------- |
+| CdRelatorioEnvio | SERIAL (PK)  | Identificador do relatório             |
+| DtGeracao        | TIMESTAMP    | Data/hora de geração do relatório      |
+| DsCaminhoArquivo | VARCHAR(255) | Caminho onde o arquivo está armazenado |
+| DsTipoRelatorio  | VARCHAR(255) | Tipo do relatório gerado               |
+| FlAtivo          | CHAR(1)      | Flag de status                         |
+| DtInclusao       | TIMESTAMP    | Data de inclusão                       |
+| DtAlteracao      | TIMESTAMP    | Data da última alteração               |
