@@ -1,5 +1,6 @@
 package com.eryka.cadoc3044.processor;
 
+import com.eryka.cadoc3044.dto.EventoOperacaoContexto;
 import com.eryka.cadoc3044.dto.EventoOperacaoDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -13,25 +14,26 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class Cadoc3044Processor implements ItemProcessor<EventoOperacaoDTO, EventoOperacaoDTO> {
+public class Cadoc3044Processor implements ItemProcessor<EventoOperacaoContexto, EventoOperacaoContexto> {
 
-    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private final Validator validator;
+
+    public Cadoc3044Processor() {
+        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
+    }
 
     @Override
-    public EventoOperacaoDTO process(EventoOperacaoDTO item) {
-        Set<ConstraintViolation<EventoOperacaoDTO>> violations = validator.validate(item);
+    public EventoOperacaoContexto process(EventoOperacaoContexto item) throws Exception {
+        log.info("Processing item: {}", item);
 
+        Set<ConstraintViolation<EventoOperacaoDTO>> violations = validator.validate(item.getOperacao());
         if (!violations.isEmpty()) {
-            String erro = violations.stream()
-                    .map(v -> v.getPropertyPath() + ": " + v.getMessage())
-                    .collect(Collectors.joining("; "));
-
-            // logar, publicar no Pub/Sub ou gravar em tabela de rejeição
-            System.err.println("Evento inválido: " + erro);
-
-            return null; // evento rejeitado → não será escrito no banco de dados
+            String errorMessage = violations.stream()
+                    .map(ConstraintViolation::getMessage)
+                    .collect(Collectors.joining(", "));
+            log.info("Validation errors: {}", errorMessage);
+            return null; // Skip this item if validation fails
         }
-
-        return item; // válido → segue para o writer
+        return item;
     }
 }

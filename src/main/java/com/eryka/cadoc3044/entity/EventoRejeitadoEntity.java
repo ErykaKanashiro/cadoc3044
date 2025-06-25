@@ -26,9 +26,9 @@ public class EventoRejeitadoEntity {
 
     @Column(name = "CdAcao", nullable = false)
     private String acao;
-
-    @Column(name = "JsDadosRecebidos", nullable = false, columnDefinition = "jsonb")
-    private String dadosRecebidos;
+//
+//    @Column(name = "JsDadosRecebidos", nullable = false, columnDefinition = "jsonb")
+//    private String dadosRecebidos;
 
     @ManyToOne
     @JoinColumn(name = "CdMotivoRejeicao")

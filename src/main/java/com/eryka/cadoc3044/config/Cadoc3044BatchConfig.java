@@ -1,17 +1,19 @@
 package com.eryka.cadoc3044.config;
 
-import com.eryka.cadoc3044.dto.EventoOperacaoDTO;
-import com.eryka.cadoc3044.processor.Cadoc3044Processor;
-import com.eryka.cadoc3044.reader.Cadoc3044FileReader;
+import com.eryka.cadoc3044.dto.EventoOperacaoContexto;
+import com.eryka.cadoc3044.partitioner.GcsFilePartitioner;
 import com.eryka.cadoc3044.writer.Cadoc3044ItemWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
@@ -26,20 +28,25 @@ public class Cadoc3044BatchConfig {
     }
 
     @Bean
-    public Job processJsonJob(JobRepository jobRepository, Step processStep) {
+    public Job processJsonJob(Step mainStep) {
         return new JobBuilder("processJsonJob", jobRepository)
-                .start(processStep)
+                .start(mainStep)
                 .build();
     }
 
     @Bean
-    public Step processStep(JobRepository jobRepository,
-                            PlatformTransactionManager transactionManager,
-                            Cadoc3044FileReader reader,
-                            Cadoc3044Processor processor) {
+    public ItemWriter<EventoOperacaoContexto> writer() {
+        return new Cadoc3044ItemWriter();
+    }
 
-        return new StepBuilder("step1", jobRepository)
-                .<EventoOperacaoDTO, EventoOperacaoDTO>chunk(1, transactionManager)
+    @Bean
+    public Step childStep(JobRepository jobRepository,
+                          PlatformTransactionManager transactionManager,
+                          ItemReader reader,
+                          ItemProcessor processor) {
+
+        return new StepBuilder("childStep", jobRepository)
+                .<EventoOperacaoContexto, EventoOperacaoContexto>chunk(1, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer())
@@ -47,8 +54,15 @@ public class Cadoc3044BatchConfig {
     }
 
     @Bean
-    public ItemWriter<EventoOperacaoDTO> writer() {
-        return new Cadoc3044ItemWriter();
-    }
+    public Step mainStep(JobRepository jobRepository,
+                          PlatformTransactionManager transactionManager,
+                          GcsFilePartitioner partitioner,
+                          Step slaveStep) {
 
+        return new StepBuilder("mainStep", jobRepository)
+                .partitioner("childStep", partitioner)
+                .step(slaveStep)
+                .taskExecutor(new SimpleAsyncTaskExecutor())
+                .build();
+    }
 }

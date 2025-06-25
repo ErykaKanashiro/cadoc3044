@@ -52,6 +52,11 @@
 			<artifactId>spring-cloud-gcp-starter-storage</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>2.26.0</version>
+		</dependency>
 		<!-- Batch Extras -->
 		<dependency>
 			<groupId>org.springframework.batch</groupId>

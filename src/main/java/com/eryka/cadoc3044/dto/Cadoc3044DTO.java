@@ -22,6 +22,4 @@ public class Cadoc3044DTO {
     private String database;
     @Valid
     private List<EventoOperacaoDTO> operacoes;
-    @Valid
-    private List<EventoPagAgregadoDTO> pagAgregados;
 }
